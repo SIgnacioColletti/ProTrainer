@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProTrainer | Mis Rutinas</title>
+
+    <!-- Fuentes de Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/routines.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- Header -->
+        <header class="page-header">
+            <button class="btn-back" id="btnBack">
+                ← Volver
+            </button>
+            <h1 class="page-title">Mis Rutinas</h1>
+            <button class="btn-add" id="btnAddRoutine">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+            </button>
+        </header>
+
+        <!-- Estado: Cargando -->
+        <div class="loading-state" id="loadingState">
+            <div class="spinner"></div>
+            <p>Cargando rutinas...</p>
+        </div>
+
+        <!-- Estado: Sin rutinas -->
+        <div class="empty-state hidden" id="emptyState">
+            <div class="empty-icon">
+                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+            </div>
+            <h2>No tenés rutinas guardadas</h2>
+            <p>Creá tu primera rutina para empezar a entrenar</p>
+            <button class="btn btn-primary" id="btnAddRoutineEmpty">
+                Crear Rutina
+            </button>
+        </div>
+
+        <!-- Lista de rutinas -->
+        <section class="routines-list hidden" id="routinesList">
+            <!-- Las rutinas se cargarán dinámicamente aquí -->
+        </section>
+
+    </div>
+
+    <!-- Modal para crear/editar rutina -->
+    <div class="modal hidden" id="routineModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Nueva Rutina</h2>
+                <button class="btn-close" id="btnCloseModal">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <form class="modal-form" id="routineForm">
+
+                <div class="form-group">
+                    <label for="exercise">Ejercicio</label>
+                    <input type="text" id="exercise" class="form-input" placeholder="Ej: Press Banca" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="series">Series</label>
+                        <input type="number" id="series" class="form-input" placeholder="4" min="1" max="20" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reps">Repeticiones</label>
+                        <input type="number" id="reps" class="form-input" placeholder="10" min="1" max="100" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="weight">Peso (kg)</label>
+                    <input type="number" id="weight" class="form-input" placeholder="60" min="0" step="0.5" required>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="btnCancelModal">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary" id="btnSubmitRoutine">
+                        Guardar
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de confirmación para eliminar -->
+    <div class="modal hidden" id="deleteModal">
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h2>¿Eliminar rutina?</h2>
+            </div>
+            <p class="delete-message">Esta acción no se puede deshacer.</p>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-secondary" id="btnCancelDelete">
+                    Cancelar
+                </button>
+                <button type="button" class="btn btn-danger" id="btnConfirmDelete">
+                    Eliminar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast de notificaciones -->
+    <div class="toast hidden" id="toast">
+        <p id="toastMessage"></p>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module" src="../js/firebaseConfig.js"></script>
+    <script type="module" src="../js/routines.js"></script>
+    <!-- Debe estar en TODAS las páginas HTML -->
+    <script type="module" src="../js/script.js"></script>
+</body>
+
+</html>

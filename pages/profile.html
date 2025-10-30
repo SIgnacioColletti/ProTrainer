@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProTrainer | Mi Perfil</title>
+
+    <!-- Fuentes de Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/profile.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- Header -->
+        <header class="page-header">
+            <button class="btn-back" id="btnBack">
+                ← Volver
+            </button>
+            <h1 class="page-title">Mi Perfil</h1>
+            <div style="width: 90px;"></div> <!-- Spacer para centrar -->
+        </header>
+
+        <!-- Sección de usuario -->
+        <section class="profile-user">
+            <div class="profile-avatar">
+                <span id="profileInitial">U</span>
+            </div>
+            <h2 id="profileName">Cargando...</h2>
+            <p id="profileEmail">usuario@email.com</p>
+        </section>
+
+        <!-- Formulario de perfil -->
+        <section class="profile-form-section">
+            <div class="section-header">
+                <h3 class="section-title">Información Personal</h3>
+                <button class="btn-edit" id="btnEdit">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                    </svg>
+                    Editar
+                </button>
+            </div>
+
+            <form class="profile-form" id="profileForm">
+
+                <div class="form-group">
+                    <label for="name">Nombre Completo</label>
+                    <input type="text" id="name" class="form-input" placeholder="Juan Pérez" required disabled>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="age">Edad</label>
+                        <input type="number" id="age" class="form-input" placeholder="28" min="10" max="120" disabled>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="height">Altura (cm)</label>
+                        <input type="number" id="height" class="form-input" placeholder="175" min="100" max="250"
+                            disabled>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="goal">Objetivo</label>
+                    <select id="goal" class="form-input" disabled>
+                        <option value="">Seleccionar objetivo</option>
+                        <option value="gain_muscle">Ganar masa muscular</option>
+                        <option value="lose_weight">Bajar de peso</option>
+                        <option value="maintain">Mantener forma</option>
+                        <option value="strength">Aumentar fuerza</option>
+                        <option value="endurance">Mejorar resistencia</option>
+                    </select>
+                </div>
+
+                <div class="form-actions hidden" id="formActions">
+                    <button type="button" class="btn btn-secondary" id="btnCancel">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary" id="btnSaveProfile">
+                        Guardar Cambios
+                    </button>
+                </div>
+
+            </form>
+        </section>
+
+        <!-- Ajustes -->
+        <section class="settings-section">
+            <h3 class="section-title">Configuración</h3>
+
+            <div class="settings-list">
+
+                <!-- Toggle de tema -->
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="12" cy="12" r="5"></circle>
+                                <line x1="12" y1="1" x2="12" y2="3"></line>
+                                <line x1="12" y1="21" x2="12" y2="23"></line>
+                                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                                <line x1="1" y1="12" x2="3" y2="12"></line>
+                                <line x1="21" y1="12" x2="23" y2="12"></line>
+                                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                            </svg>
+                        </div>
+                        <div class="setting-text">
+                            <h4>Modo Claro</h4>
+                            <p>Cambiar entre tema oscuro y claro</p>
+                        </div>
+                    </div>
+                    <label class="toggle">
+                        <input type="checkbox" id="themeToggle">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+
+                <!-- Info de cuenta -->
+                <div class="setting-item setting-info-only">
+                    <div class="setting-info">
+                        <div class="setting-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </div>
+                        <div class="setting-text">
+                            <h4>Cuenta</h4>
+                            <p id="accountEmail">usuario@email.com</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Versión de la app -->
+                <div class="setting-item setting-info-only">
+                    <div class="setting-info">
+                        <div class="setting-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="16" x2="12" y2="12"></line>
+                                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                            </svg>
+                        </div>
+                        <div class="setting-text">
+                            <h4>Versión</h4>
+                            <p>ProTrainer v1.0.0</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Toast de notificaciones -->
+    <div class="toast hidden" id="toast">
+        <p id="toastMessage"></p>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module" src="../js/firebaseConfig.js"></script>
+    <script type="module" src="../js/profile.js"></script>
+
+</body>
+
+</html>

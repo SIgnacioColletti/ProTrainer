@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProTrainer | Autenticación</title>
+
+    <!-- Fuentes de Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/auth.css">
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- FORMULARIO DE LOGIN -->
+        <section class="auth-section" id="loginSection">
+
+            <div class="auth-header">
+                <h1 class="logo">ProTrainer</h1>
+                <p class="auth-subtitle">Ingresá a tu cuenta</p>
+            </div>
+
+            <form class="auth-form" id="loginForm">
+
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" class="form-input" placeholder="tu@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="loginPassword">Contraseña</label>
+                    <input type="password" id="loginPassword" class="form-input" placeholder="••••••••" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-full">
+                    Iniciar Sesión
+                </button>
+
+            </form>
+
+            <div class="auth-footer">
+                <p>¿No tenés cuenta? <a href="#" id="showRegister" class="link-primary">Registrate</a></p>
+            </div>
+
+            <button class="btn-back" id="backFromLogin">
+                ← Volver
+            </button>
+
+        </section>
+
+        <!-- FORMULARIO DE REGISTRO -->
+        <section class="auth-section hidden" id="registerSection">
+
+            <div class="auth-header">
+                <h1 class="logo">ProTrainer</h1>
+                <p class="auth-subtitle">Creá tu cuenta</p>
+            </div>
+
+            <form class="auth-form" id="registerForm">
+
+                <div class="form-group">
+                    <label for="registerName">Nombre completo</label>
+                    <input type="text" id="registerName" class="form-input" placeholder="Juan Pérez" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="registerEmail">Email</label>
+                    <input type="email" id="registerEmail" class="form-input" placeholder="tu@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="registerPassword">Contraseña</label>
+                    <input type="password" id="registerPassword" class="form-input" placeholder="Mínimo 6 caracteres"
+                        required minlength="6">
+                </div>
+
+                <div class="form-group">
+                    <label for="registerPasswordConfirm">Confirmar contraseña</label>
+                    <input type="password" id="registerPasswordConfirm" class="form-input"
+                        placeholder="Repetí tu contraseña" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-full">
+                    Crear Cuenta
+                </button>
+
+            </form>
+
+            <div class="auth-footer">
+                <p>¿Ya tenés cuenta? <a href="#" id="showLogin" class="link-primary">Iniciá sesión</a></p>
+            </div>
+
+            <button class="btn-back" id="backFromRegister">
+                ← Volver
+            </button>
+
+        </section>
+
+    </div>
+
+    <!-- Notificación Toast -->
+    <div class="toast hidden" id="toast">
+        <p id="toastMessage"></p>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module" src="../js/firebaseConfig.js"></script>
+    <script type="module" src="../js/auth.js"></script>
+    <!-- Debe estar en TODAS las páginas HTML -->
+    <script type="module" src="../js/script.js"></script>
+</body>
+
+</html>

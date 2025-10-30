@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ProTrainer - Seguimiento de entrenamiento personalizado">
+    <title>ProTrainer | Entrená. Superate. LevelUp.</title>
+
+    <!-- Fuentes de Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <!-- Estilos -->
+
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+
+<body>
+
+    <!-- Contenedor principal -->
+    <div class="container">
+
+        <!-- Sección de Landing -->
+        <section class="landing" id="landing">
+
+            <!-- Logo y branding -->
+            <div class="brand">
+                <h1 class="logo">ProTrainer</h1>
+                <p class="tagline">Entrená. Superate. LevelUp.</p>
+            </div>
+
+            <!-- Ilustración o ícono decorativo -->
+            <div class="hero-icon">
+                <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Ícono de pesa simplificado -->
+                    <circle cx="30" cy="60" r="15" fill="#00FF88" />
+                    <circle cx="90" cy="60" r="15" fill="#00FF88" />
+                    <rect x="25" y="55" width="70" height="10" rx="5" fill="#00FF88" />
+                </svg>
+            </div>
+
+            <!-- Botones de acción -->
+            <div class="cta-buttons">
+                <button class="btn btn-primary" id="btnLogin">
+                    Iniciar sesión
+                </button>
+                <button class="btn btn-secondary" id="btnRegister">
+                    Registrarse
+                </button>
+            </div>
+
+            <!-- Footer informativo -->
+            <footer class="landing-footer">
+                <p>Tu progreso, tu control, tus resultados</p>
+            </footer>
+
+        </section>
+
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module" src="js/firebaseConfig.js"></script>
+    <script type="module" src="js/script.js"></script>
+
+</body>
+
+</html>

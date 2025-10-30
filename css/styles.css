@@ -1,0 +1,279 @@
+/* ===================================
+   VARIABLES CSS - Diseño centralizado
+   =================================== */
+:root {
+  /* Colores oficiales ProTrainer */
+  --color-primary: #00ff88;
+  --color-primary-dark: #00995e;
+  --color-background: #000000;
+  --color-text: #ffffff;
+  --color-text-secondary: #b0b0b0;
+
+  /* Tipografía */
+  --font-heading: "Montserrat", sans-serif;
+  --font-body: "Poppins", sans-serif;
+
+  /* Espaciado */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 3rem;
+
+  /* Bordes */
+  --border-radius: 12px;
+  --border-radius-sm: 8px;
+
+  /* Sombras */
+  --shadow-sm: 0 2px 8px rgba(0, 255, 136, 0.1);
+  --shadow-md: 0 4px 16px rgba(0, 255, 136, 0.2);
+  --shadow-lg: 0 8px 24px rgba(0, 255, 136, 0.3);
+
+  /* Transiciones */
+  --transition: all 0.3s ease;
+}
+
+/* ===================================
+   RESET Y BASE
+   =================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-background);
+  color: var(--color-text);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+/* ===================================
+   CONTENEDOR PRINCIPAL
+   =================================== */
+.container {
+  width: 100%;
+  max-width: 480px; /* Mobile-first: ancho máximo para móviles */
+  margin: 0 auto;
+  padding: var(--spacing-md);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===================================
+   LANDING PAGE
+   =================================== */
+.landing {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex: 1;
+  gap: var(--spacing-xl);
+  padding: var(--spacing-lg) 0;
+}
+
+/* Branding */
+.brand {
+  animation: fadeInDown 0.8s ease-out;
+}
+
+.logo {
+  font-family: var(--font-heading);
+  font-size: 3rem;
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: var(--spacing-xs);
+  text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+}
+
+.tagline {
+  font-size: 1rem;
+  color: var(--color-text-secondary);
+  font-weight: 300;
+  letter-spacing: 1px;
+}
+
+/* Hero Icon */
+.hero-icon {
+  animation: fadeInUp 0.8s ease-out 0.2s both;
+}
+
+.hero-icon svg {
+  filter: drop-shadow(var(--shadow-md));
+}
+
+/* Botones de llamada a la acción */
+.cta-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  width: 100%;
+  max-width: 320px;
+  animation: fadeInUp 0.8s ease-out 0.4s both;
+}
+
+.btn {
+  padding: var(--spacing-md) var(--spacing-lg);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: var(--transition);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: var(--color-background);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-dark);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-primary);
+  color: var(--color-background);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.btn-secondary:active {
+  transform: translateY(0);
+}
+
+/* Footer */
+.landing-footer {
+  margin-top: auto;
+  animation: fadeIn 0.8s ease-out 0.6s both;
+}
+
+.landing-footer p {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+/* ===================================
+   ANIMACIONES
+   =================================== */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ===================================
+   RESPONSIVE - TABLETS
+   =================================== */
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
+    padding: var(--spacing-lg);
+  }
+
+  .logo {
+    font-size: 4rem;
+  }
+
+  .tagline {
+    font-size: 1.25rem;
+  }
+
+  .cta-buttons {
+    max-width: 400px;
+  }
+}
+
+/* ===================================
+   RESPONSIVE - DESKTOP
+   =================================== */
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1024px;
+  }
+
+  .landing {
+    gap: var(--spacing-xl);
+  }
+
+  .cta-buttons {
+    flex-direction: row;
+    max-width: 600px;
+  }
+
+  .btn {
+    flex: 1;
+  }
+}
+
+/* ===================================
+   UTILIDADES
+   =================================== */
+.hidden {
+  display: none !important;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.mt-1 {
+  margin-top: var(--spacing-sm);
+}
+.mt-2 {
+  margin-top: var(--spacing-md);
+}
+.mt-3 {
+  margin-top: var(--spacing-lg);
+}

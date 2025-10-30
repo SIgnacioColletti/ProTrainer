@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProTrainer | Mi Progreso</title>
+
+    <!-- Fuentes de Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/progrss.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- Header -->
+        <header class="page-header">
+            <button class="btn-back" id="btnBack">
+                ← Volver
+            </button>
+            <h1 class="page-title">Mi Progreso</h1>
+            <button class="btn-add" id="btnAddProgress">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+            </button>
+        </header>
+
+        <!-- Sección de gráfico -->
+        <section class="chart-section">
+            <div class="chart-header">
+                <h2 class="section-title">Evolución de Peso</h2>
+                <div class="chart-filters">
+                    <button class="filter-btn active" data-period="30">30 días</button>
+                    <button class="filter-btn" data-period="90">90 días</button>
+                    <button class="filter-btn" data-period="all">Todo</button>
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="weightChart"></canvas>
+            </div>
+        </section>
+
+        <!-- Estado: Cargando -->
+        <div class="loading-state hidden" id="loadingState">
+            <div class="spinner"></div>
+            <p>Cargando registros...</p>
+        </div>
+
+        <!-- Estado: Sin registros -->
+        <div class="empty-state hidden" id="emptyState">
+            <div class="empty-icon">
+                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                </svg>
+            </div>
+            <h2>No tenés registros todavía</h2>
+            <p>Empezá a registrar tu progreso para ver tu evolución</p>
+            <button class="btn btn-primary" id="btnAddProgressEmpty">
+                Registrar Progreso
+            </button>
+        </div>
+
+        <!-- Historial de registros -->
+        <section class="history-section hidden" id="historySection">
+            <h2 class="section-title">Historial de Registros</h2>
+            <div class="history-list" id="historyList">
+                <!-- Los registros se cargarán dinámicamente aquí -->
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Modal para registrar progreso -->
+    <div class="modal hidden" id="progressModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Registrar Progreso</h2>
+                <button class="btn-close" id="btnCloseModal">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <form class="modal-form" id="progressForm">
+
+                <div class="form-group">
+                    <label for="weight">Peso (kg)</label>
+                    <input type="number" id="weight" class="form-input" placeholder="75.5" min="30" max="300" step="0.1"
+                        required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="chest">Pecho (cm)</label>
+                        <input type="number" id="chest" class="form-input" placeholder="100" min="50" max="200"
+                            step="0.5">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="waist">Cintura (cm)</label>
+                        <input type="number" id="waist" class="form-input" placeholder="85" min="50" max="200"
+                            step="0.5">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="arms">Brazos (cm)</label>
+                        <input type="number" id="arms" class="form-input" placeholder="38" min="20" max="80" step="0.5">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="legs">Piernas (cm)</label>
+                        <input type="number" id="legs" class="form-input" placeholder="60" min="30" max="100"
+                            step="0.5">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="date">Fecha</label>
+                    <input type="date" id="date" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="notes">Notas (opcional)</label>
+                    <textarea id="notes" class="form-input form-textarea" placeholder="Ej: Me sentí con más energía hoy"
+                        rows="3"></textarea>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="btnCancelModal">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary" id="btnSubmitProgress">
+                        Guardar
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de confirmación para eliminar -->
+    <div class="modal hidden" id="deleteModal">
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h2>¿Eliminar registro?</h2>
+                <button class="btn-close" id="btnCloseDeleteModal">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <p class="delete-message">Esta acción no se puede deshacer. Se eliminará el registro de progreso
+                permanentemente.</p>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-secondary" id="btnCancelDelete">
+                    Cancelar
+                </button>
+                <button type="button" class="btn btn-danger" id="btnConfirmDelete">
+                    Eliminar
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- Toast de notificaciones -->
+    <div class="toast hidden" id="toast">
+        <p id="toastMessage"></p>
+    </div>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+
+    <!-- Firebase SDK -->
+    <script type="module" src="../js/firebaseConfig.js"></script>
+    <script type="module" src="../js/progress.js"></script>
+    <!-- Debe estar en TODAS las páginas HTML -->
+    <script type="module" src="../js/script.js"></script>
+</body>
+
+</html>
