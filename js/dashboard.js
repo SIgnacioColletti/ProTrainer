@@ -195,7 +195,22 @@ function showToast(message, type = "success") {
     toast.classList.add("hidden");
   }, 3000);
 }
+document.getElementById("btnRoutines").addEventListener("click", () => {
+  window.location.href = "routines.html";
+});
 
+// AGREGAR ESTE:
+document.getElementById("btnExercises").addEventListener("click", () => {
+  window.location.href = "exercises.html";
+});
+
+document.getElementById("btnProgress").addEventListener("click", () => {
+  window.location.href = "progress.html";
+});
+
+document.getElementById("btnProfile").addEventListener("click", () => {
+  window.location.href = "profile.html";
+});
 /**
  * ========================================
  * EXPORTS

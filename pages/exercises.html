@@ -1,0 +1,231 @@
+<!-- ============================================ -->
+<!-- ARCHIVO: pages/exercises.html -->
+<!-- ============================================ -->
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca de Ejercicios - ProTrainer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/exercises.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <!-- REEMPLAZA EL HEADER COMPLETO -->
+    <header class="exercises-header">
+        <button class="btn-back" id="btnBack">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+        </button>
+        <h1>Biblioteca de Ejercicios</h1>
+        <button class="btn-add-exercise" id="btnAddExercise" title="Crear ejercicio">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+            </svg>
+        </button>
+    </header>
+    <!-- Búsqueda y Filtros -->
+    <section class="search-section">
+        <div class="search-bar">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.35-4.35" />
+            </svg>
+            <input type="text" id="searchInput" placeholder="Buscar ejercicios...">
+            <button class="btn-clear-search" id="btnClearSearch" style="display: none;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Tabs de Categorías -->
+        <div class="categories-tabs" id="categoriesTabs">
+            <button class="tab-btn active" data-category="all">Todos</button>
+            <button class="tab-btn" data-category="pecho">Pecho</button>
+            <button class="tab-btn" data-category="espalda">Espalda</button>
+            <button class="tab-btn" data-category="piernas">Piernas</button>
+            <button class="tab-btn" data-category="hombros">Hombros</button>
+            <button class="tab-btn" data-category="brazos">Brazos</button>
+            <button class="tab-btn" data-category="core">Core</button>
+            <button class="tab-btn" data-category="cardio">Cardio</button>
+        </div>
+
+        <!-- Filtro por Nivel -->
+        <div class="level-filter">
+            <button class="level-btn active" data-level="all">Todos</button>
+            <button class="level-btn" data-level="principiante">Principiante</button>
+            <button class="level-btn" data-level="intermedio">Intermedio</button>
+            <button class="level-btn" data-level="avanzado">Avanzado</button>
+        </div>
+    </section>
+
+    <!-- Contador de resultados -->
+    <div class="results-info">
+        <span id="resultsCount">0 ejercicios encontrados</span>
+        <button class="btn-favorites" id="btnToggleFavorites">
+            ⭐ Solo favoritos
+        </button>
+    </div>
+
+    <!-- Lista de Ejercicios -->
+    <main class="exercises-container" id="exercisesContainer">
+        <!-- Se genera dinámicamente -->
+    </main>
+
+    <!-- Modal Detalle de Ejercicio -->
+    <div class="modal-overlay" id="exerciseModal">
+        <div class="modal-exercise">
+            <button class="btn-close-modal" id="btnCloseModal">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+            </button>
+
+            <div class="modal-content" id="modalContent">
+                <!-- Se genera dinámicamente -->
+            </div>
+        </div>
+    </div>
+    <!-- Modal Crear Ejercicio Personalizado -->
+    <div class="modal-overlay" id="createExerciseModal">
+        <div class="modal-exercise">
+            <button class="btn-close-modal" id="btnCloseCreateModal">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+            </button>
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Crear Ejercicio Personalizado</h2>
+                    <p style="color: var(--gris-claro); font-size: 0.9rem;">Agrega tus propios ejercicios a la
+                        biblioteca</p>
+                </div>
+
+                <form id="createExerciseForm">
+                    <!-- Nombre -->
+                    <div class="form-group">
+                        <label for="customExerciseName">Nombre del Ejercicio *</label>
+                        <input type="text" id="customExerciseName" placeholder="Ej: Press inclinado con mancuernas"
+                            required>
+                    </div>
+
+                    <!-- Categoría -->
+                    <div class="form-group">
+                        <label for="customExerciseCategory">Categoría *</label>
+                        <select id="customExerciseCategory" required>
+                            <option value="pecho">Pecho</option>
+                            <option value="espalda">Espalda</option>
+                            <option value="piernas">Piernas</option>
+                            <option value="hombros">Hombros</option>
+                            <option value="brazos">Brazos</option>
+                            <option value="core">Core</option>
+                            <option value="cardio">Cardio</option>
+                        </select>
+                    </div>
+
+                    <!-- Nivel -->
+                    <div class="form-group">
+                        <label for="customExerciseLevel">Nivel *</label>
+                        <select id="customExerciseLevel" required>
+                            <option value="principiante">Principiante</option>
+                            <option value="intermedio">Intermedio</option>
+                            <option value="avanzado">Avanzado</option>
+                        </select>
+                    </div>
+
+                    <!-- Descripción -->
+                    <div class="form-group">
+                        <label for="customExerciseDescription">Descripción Breve *</label>
+                        <textarea id="customExerciseDescription" rows="3"
+                            placeholder="Describe brevemente el ejercicio..." required></textarea>
+                    </div>
+
+                    <!-- Instrucciones -->
+                    <div class="form-group">
+                        <label>Instrucciones (paso a paso)</label>
+                        <div id="instructionsContainer">
+                            <div class="instruction-item">
+                                <input type="text" class="instruction-input" placeholder="Paso 1" required>
+                                <button type="button" class="btn-remove-instruction" style="display: none;">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <line x1="18" y1="6" x2="6" y2="18" />
+                                        <line x1="6" y1="6" x2="18" y2="18" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <button type="button" class="btn-add-instruction" id="btnAddInstruction">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <line x1="12" y1="5" x2="12" y2="19" />
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                            </svg>
+                            Agregar paso
+                        </button>
+                    </div>
+
+                    <!-- Tips -->
+                    <div class="form-group">
+                        <label>Tips de Seguridad (opcional)</label>
+                        <div id="tipsContainer">
+                            <div class="tip-item">
+                                <input type="text" class="tip-input" placeholder="Tip 1">
+                                <button type="button" class="btn-remove-tip" style="display: none;">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <line x1="18" y1="6" x2="6" y2="18" />
+                                        <line x1="6" y1="6" x2="18" y2="18" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <button type="button" class="btn-add-tip" id="btnAddTip">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <line x1="12" y1="5" x2="12" y2="19" />
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                            </svg>
+                            Agregar tip
+                        </button>
+                    </div>
+
+                    <!-- Botones -->
+                    <div class="modal-actions">
+                        <button type="button" class="btn-action btn-cancel" id="btnCancelCreate">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="btn-action btn-add-routine">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            Crear Ejercicio
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <script type="module" src="../js/exercises.js"></script>
+</body>
+
+</html>

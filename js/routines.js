@@ -1,411 +1,513 @@
-/**
- * ========================================
- * PROTRAINER - ROUTINES MANAGEMENT
- * ========================================
- * CRUD completo de rutinas con Firestore
- */
+// ============================================
+// ARCHIVO: js/routines.js
+// ============================================
 
 import { auth, db } from "./firebaseConfig.js";
-import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import {
   collection,
   addDoc,
   getDocs,
-  doc,
-  updateDoc,
   deleteDoc,
+  updateDoc,
+  doc,
   query,
   where,
-  orderBy,
   serverTimestamp,
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-/**
- * ========================================
- * VARIABLES GLOBALES
- * ========================================
- */
-let currentUser = null;
+// ============================================
+// VARIABLES GLOBALES
+// ============================================
+
+let routines = [];
 let editingRoutineId = null;
-let deletingRoutineId = null;
+let currentExercises = [];
 
-/**
- * ========================================
- * INICIALIZACIÓN
- * ========================================
- */
+// ============================================
+// INICIALIZACIÓN
+// ============================================
+
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("💪 Módulo de rutinas cargado");
+  console.log("💪 Rutinas cargadas");
 
   // Verificar autenticación
-  checkAuth();
+  auth.onAuthStateChanged((user) => {
+    if (!user) {
+      window.location.href = "auth.html";
+      return;
+    }
 
-  // Inicializar eventos
-  initRoutinesListeners();
+    console.log("👤 Usuario autenticado:", user.email);
+    loadRoutines();
+    checkForSelectedExercise();
+  });
+
+  // Event Listeners
+  document.getElementById("btnBack")?.addEventListener("click", () => {
+    window.location.href = "dashboard.html";
+  });
+
+  document.getElementById("btnOpenLibrary")?.addEventListener("click", () => {
+    window.location.href = "exercises.html";
+  });
+
+  document
+    .getElementById("btnCreateRoutine")
+    ?.addEventListener("click", openAddRoutineModal);
+  document
+    .getElementById("btnCloseModal")
+    ?.addEventListener("click", closeRoutineModal);
+  document
+    .getElementById("btnCancel")
+    ?.addEventListener("click", closeRoutineModal);
+  document
+    .getElementById("routineForm")
+    ?.addEventListener("submit", saveRoutine);
+
+  // Modal de ejercicio
+  document
+    .getElementById("btnAddExercise")
+    ?.addEventListener("click", openExerciseModal);
+  document
+    .getElementById("btnCloseExerciseModal")
+    ?.addEventListener("click", closeExerciseModal);
+  document
+    .getElementById("btnCancelExercise")
+    ?.addEventListener("click", closeExerciseModal);
+  document
+    .getElementById("exerciseForm")
+    ?.addEventListener("submit", addExerciseToRoutine);
+  document.getElementById("btnAddSet")?.addEventListener("click", addSet);
+  document.getElementById("btnTemplates")?.addEventListener("click", () => {
+    window.location.href = "templates.html";
+  });
 });
 
-/**
- * ========================================
- * VERIFICAR AUTENTICACIÓN
- * ========================================
- */
-function checkAuth() {
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      currentUser = user;
-      console.log("✅ Usuario autenticado:", user.email);
-      loadRoutines();
-    } else {
-      console.log("❌ Usuario no autenticado, redirigiendo...");
-      window.location.href = "../index.html";
-    }
-  });
-}
+// ============================================
+// CARGAR RUTINAS DESDE FIRESTORE
+// ============================================
 
-/**
- * ========================================
- * CARGAR RUTINAS
- * ========================================
- */
 async function loadRoutines() {
-  const loadingState = document.getElementById("loadingState");
-  const emptyState = document.getElementById("emptyState");
-  const routinesList = document.getElementById("routinesList");
+  const loadingEl = document.getElementById("loading");
+  const listEl = document.getElementById("routinesList");
 
-  try {
-    // Mostrar estado de carga
-    loadingState.classList.remove("hidden");
-    emptyState.classList.add("hidden");
-    routinesList.classList.add("hidden");
-
-    // Query a Firestore
-    const routinesRef = collection(db, "routines");
-    const q = query(
-      routinesRef,
-      where("userId", "==", currentUser.uid),
-      orderBy("createdAt", "desc")
-    );
-
-    const querySnapshot = await getDocs(q);
-
-    // Ocultar loading
-    loadingState.classList.add("hidden");
-
-    if (querySnapshot.empty) {
-      // No hay rutinas
-      emptyState.classList.remove("hidden");
-    } else {
-      // Renderizar rutinas
-      routinesList.classList.remove("hidden");
-      routinesList.innerHTML = "";
-
-      querySnapshot.forEach((doc) => {
-        const routine = { id: doc.id, ...doc.data() };
-        renderRoutine(routine);
-      });
-    }
-  } catch (error) {
-    console.error("❌ Error al cargar rutinas:", error);
-    loadingState.classList.add("hidden");
-    showToast("Error al cargar rutinas", "error");
-  }
-}
-
-/**
- * ========================================
- * RENDERIZAR RUTINA
- * ========================================
- */
-function renderRoutine(routine) {
-  const routinesList = document.getElementById("routinesList");
-
-  const routineCard = document.createElement("div");
-  routineCard.className = "routine-card";
-  routineCard.innerHTML = `
-        <div class="routine-header">
-            <h3 class="routine-name">${routine.exercise}</h3>
-            <div class="routine-actions">
-                <button class="btn-icon btn-edit" data-id="${routine.id}">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                    </svg>
-                </button>
-                <button class="btn-icon btn-delete" data-id="${routine.id}">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="3 6 5 6 21 6"></polyline>
-                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                    </svg>
-                </button>
-            </div>
-        </div>
-        <div class="routine-details">
-            <div class="routine-detail">
-                <span class="detail-label">Series</span>
-                <span class="detail-value">${routine.series}</span>
-            </div>
-            <div class="routine-detail">
-                <span class="detail-label">Reps</span>
-                <span class="detail-value">${routine.reps}</span>
-            </div>
-            <div class="routine-detail">
-                <span class="detail-label">Peso</span>
-                <span class="detail-value">${routine.weight} kg</span>
-            </div>
-        </div>
-    `;
-
-  routinesList.appendChild(routineCard);
-
-  // Event listeners para botones
-  routineCard
-    .querySelector(".btn-edit")
-    .addEventListener("click", () => openEditModal(routine));
-  routineCard
-    .querySelector(".btn-delete")
-    .addEventListener("click", () => openDeleteModal(routine.id));
-}
-
-/**
- * ========================================
- * EVENT LISTENERS
- * ========================================
- */
-function initRoutinesListeners() {
-  // Botón volver
-  const btnBack = document.getElementById("btnBack");
-  if (btnBack) {
-    btnBack.addEventListener("click", () => {
-      window.location.href = "dashboard.html";
-    });
-  }
-
-  // Botones para abrir modal de crear
-  const btnAddRoutine = document.getElementById("btnAddRoutine");
-  const btnAddRoutineEmpty = document.getElementById("btnAddRoutineEmpty");
-
-  if (btnAddRoutine) {
-    btnAddRoutine.addEventListener("click", openCreateModal);
-  }
-
-  if (btnAddRoutineEmpty) {
-    btnAddRoutineEmpty.addEventListener("click", openCreateModal);
-  }
-
-  // Botones del modal de rutina
-  const btnCloseModal = document.getElementById("btnCloseModal");
-  const btnCancelModal = document.getElementById("btnCancelModal");
-  const routineForm = document.getElementById("routineForm");
-
-  if (btnCloseModal) {
-    btnCloseModal.addEventListener("click", closeRoutineModal);
-  }
-
-  if (btnCancelModal) {
-    btnCancelModal.addEventListener("click", closeRoutineModal);
-  }
-
-  if (routineForm) {
-    routineForm.addEventListener("submit", handleSubmitRoutine);
-  }
-
-  // Botones del modal de eliminación
-  const btnCancelDelete = document.getElementById("btnCancelDelete");
-  const btnConfirmDelete = document.getElementById("btnConfirmDelete");
-
-  if (btnCancelDelete) {
-    btnCancelDelete.addEventListener("click", closeDeleteModal);
-  }
-
-  if (btnConfirmDelete) {
-    btnConfirmDelete.addEventListener("click", handleDeleteRoutine);
-  }
-}
-
-/**
- * ========================================
- * ABRIR MODAL PARA CREAR
- * ========================================
- */
-function openCreateModal() {
-  const modal = document.getElementById("routineModal");
-  const modalTitle = document.getElementById("modalTitle");
-  const form = document.getElementById("routineForm");
-
-  editingRoutineId = null;
-  modalTitle.textContent = "Nueva Rutina";
-  form.reset();
-  modal.classList.remove("hidden");
-}
-
-/**
- * ========================================
- * ABRIR MODAL PARA EDITAR
- * ========================================
- */
-function openEditModal(routine) {
-  const modal = document.getElementById("routineModal");
-  const modalTitle = document.getElementById("modalTitle");
-
-  editingRoutineId = routine.id;
-  modalTitle.textContent = "Editar Rutina";
-
-  // Llenar formulario con datos actuales
-  document.getElementById("exercise").value = routine.exercise;
-  document.getElementById("series").value = routine.series;
-  document.getElementById("reps").value = routine.reps;
-  document.getElementById("weight").value = routine.weight;
-
-  modal.classList.remove("hidden");
-}
-
-/**
- * ========================================
- * CERRAR MODAL DE RUTINA
- * ========================================
- */
-function closeRoutineModal() {
-  const modal = document.getElementById("routineModal");
-  const form = document.getElementById("routineForm");
-
-  modal.classList.add("hidden");
-  form.reset();
-  editingRoutineId = null;
-}
-
-/**
- * ========================================
- * MANEJAR SUBMIT DEL FORMULARIO
- * ========================================
- */
-async function handleSubmitRoutine(e) {
-  e.preventDefault();
-
-  // Obtener valores
-  const exercise = document.getElementById("exercise").value.trim();
-  const series = parseInt(document.getElementById("series").value);
-  const reps = parseInt(document.getElementById("reps").value);
-  const weight = parseFloat(document.getElementById("weight").value);
-
-  // Validaciones
-  if (!exercise || series < 1 || reps < 1 || weight < 0) {
-    showToast("Por favor completá todos los campos correctamente", "error");
+  if (!loadingEl || !listEl) {
+    console.error("❌ Elementos del DOM no encontrados");
     return;
   }
 
-  // Deshabilitar botón
-  const btnSubmit = document.getElementById("btnSubmitRoutine");
-  btnSubmit.disabled = true;
-  btnSubmit.textContent = "Guardando...";
+  loadingEl.style.display = "flex";
+  listEl.innerHTML = "";
+
+  try {
+    const routinesRef = collection(db, "routines");
+    const q = query(routinesRef, where("userId", "==", auth.currentUser.uid));
+    const snapshot = await getDocs(q);
+
+    routines = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    loadingEl.style.display = "none";
+    renderRoutines();
+
+    console.log(`✅ ${routines.length} rutinas cargadas`);
+  } catch (error) {
+    console.error("❌ Error cargando rutinas:", error);
+    loadingEl.style.display = "none";
+    showToast("Error al cargar las rutinas");
+  }
+}
+
+// ============================================
+// RENDERIZAR RUTINAS
+// ============================================
+
+function renderRoutines() {
+  const routinesList = document.getElementById("routinesList");
+
+  if (!routinesList) {
+    console.error("❌ Elemento routinesList no encontrado");
+    return;
+  }
+
+  routinesList.innerHTML = "";
+
+  if (routines.length === 0) {
+    routinesList.innerHTML = `
+            <div class="empty-state">
+                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                    <line x1="12" y1="8" x2="12" y2="16"/>
+                    <line x1="8" y1="12" x2="16" y2="12"/>
+                </svg>
+                <p>No tienes rutinas guardadas</p>
+                <button class="btn-primary" id="btnFirstRoutine">Crear mi primera rutina</button>
+            </div>
+        `;
+
+    document
+      .getElementById("btnFirstRoutine")
+      ?.addEventListener("click", openAddRoutineModal);
+    return;
+  }
+
+  routines.forEach((routine) => {
+    const routineCard = document.createElement("div");
+    routineCard.className = "routine-card";
+
+    const totalExercises = routine.exercises ? routine.exercises.length : 0;
+    const estimatedTime = totalExercises * 5;
+
+    routineCard.innerHTML = `
+            <div class="routine-header">
+                <h3 class="routine-name">${
+                  routine.name || "Rutina sin nombre"
+                }</h3>
+                <div class="routine-actions">
+                    <button class="btn-icon btn-edit" data-id="${routine.id}">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                        </svg>
+                    </button>
+                    <button class="btn-icon btn-delete" data-id="${routine.id}">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="routine-info">
+                <span class="info-item">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                        <line x1="9" y1="9" x2="15" y2="9"/>
+                        <line x1="9" y1="15" x2="15" y2="15"/>
+                    </svg>
+                    ${totalExercises} ejercicios
+                </span>
+                <span class="info-item">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                    ~${estimatedTime} min
+                </span>
+            </div>
+            
+            <div class="exercises-preview">
+                ${
+                  routine.exercises && routine.exercises.length > 0
+                    ? routine.exercises
+                        .slice(0, 3)
+                        .map(
+                          (ex) => `
+                        <div class="exercise-preview-item">
+                            <span class="exercise-name">${ex.name}</span>
+                            <span class="exercise-sets">${
+                              ex.sets ? ex.sets.length : 3
+                            }x${
+                            ex.sets && ex.sets[0] ? ex.sets[0].reps : 12
+                          }</span>
+                        </div>
+                    `
+                        )
+                        .join("")
+                    : '<p class="no-exercises">Sin ejercicios</p>'
+                }
+                ${
+                  routine.exercises && routine.exercises.length > 3
+                    ? `<span class="more-exercises">+${
+                        routine.exercises.length - 3
+                      } más...</span>`
+                    : ""
+                }
+            </div>
+            
+            <button class="btn-start-workout" data-id="${routine.id}">
+                💪 Iniciar Entrenamiento
+            </button>
+        `;
+
+    routinesList.appendChild(routineCard);
+  });
+
+  attachRoutineEventListeners();
+}
+
+// ============================================
+// AGREGAR EVENT LISTENERS
+// ============================================
+
+function attachRoutineEventListeners() {
+  document.querySelectorAll(".btn-edit").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      editRoutine(btn.dataset.id);
+    });
+  });
+
+  document.querySelectorAll(".btn-delete").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      deleteRoutine(btn.dataset.id);
+    });
+  });
+
+  document.querySelectorAll(".btn-start-workout").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      startWorkout(btn.dataset.id);
+    });
+  });
+}
+
+// ============================================
+// MODALES
+// ============================================
+
+function openAddRoutineModal() {
+  editingRoutineId = null;
+  currentExercises = [];
+
+  document.getElementById("modalTitle").textContent = "Crear Nueva Rutina";
+  document.getElementById("routineName").value = "";
+  document.getElementById("exercisesContainer").innerHTML =
+    '<p class="no-exercises">No hay ejercicios. Haz click en "Agregar Ejercicio"</p>';
+
+  document.getElementById("routineModal").classList.add("active");
+}
+
+function closeRoutineModal() {
+  document.getElementById("routineModal").classList.remove("active");
+}
+
+function openExerciseModal() {
+  document.getElementById("exerciseName").value = "";
+  document.getElementById("exerciseCategory").value = "pecho";
+
+  const setsContainer = document.getElementById("setsContainer");
+  setsContainer.innerHTML = "";
+  for (let i = 0; i < 3; i++) {
+    addSet();
+  }
+
+  document.getElementById("exerciseModal").classList.add("active");
+}
+
+function closeExerciseModal() {
+  document.getElementById("exerciseModal").classList.remove("active");
+}
+
+function addSet() {
+  const container = document.getElementById("setsContainer");
+  const setNumber = container.children.length + 1;
+
+  const setItem = document.createElement("div");
+  setItem.className = "set-item";
+  setItem.innerHTML = `
+        <span class="set-label">Serie ${setNumber}</span>
+        <input type="number" placeholder="Peso (kg)" min="0" step="0.5" value="0" required>
+        <input type="number" placeholder="Reps" min="1" value="12" required>
+        <button type="button" class="btn-remove-set" onclick="this.parentElement.remove()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+        </button>
+    `;
+
+  container.appendChild(setItem);
+}
+
+function addExerciseToRoutine(e) {
+  e.preventDefault();
+
+  const name = document.getElementById("exerciseName").value;
+  const category = document.getElementById("exerciseCategory").value;
+
+  const setsContainer = document.getElementById("setsContainer");
+  const sets = Array.from(setsContainer.querySelectorAll(".set-item")).map(
+    (item) => {
+      const inputs = item.querySelectorAll("input");
+      return {
+        weight: parseFloat(inputs[0].value) || 0,
+        reps: parseInt(inputs[1].value) || 12,
+      };
+    }
+  );
+
+  currentExercises.push({
+    name,
+    category,
+    sets,
+  });
+
+  renderExercisesInRoutine();
+  closeExerciseModal();
+  showToast(`✅ ${name} agregado`);
+}
+
+function renderExercisesInRoutine() {
+  const container = document.getElementById("exercisesContainer");
+
+  if (currentExercises.length === 0) {
+    container.innerHTML =
+      '<p class="no-exercises">No hay ejercicios. Haz click en "Agregar Ejercicio"</p>';
+    return;
+  }
+
+  container.innerHTML = currentExercises
+    .map(
+      (exercise, index) => `
+        <div class="exercise-item">
+            <div class="exercise-item-info">
+                <h4>${exercise.name}</h4>
+                <p>${exercise.sets.length} series - ${exercise.category}</p>
+            </div>
+            <button type="button" class="btn-remove-exercise" onclick="removeExercise(${index})">Eliminar</button>
+        </div>
+    `
+    )
+    .join("");
+}
+
+window.removeExercise = function (index) {
+  currentExercises.splice(index, 1);
+  renderExercisesInRoutine();
+  showToast("Ejercicio eliminado");
+};
+
+// ============================================
+// GUARDAR RUTINA (CORREGIDO)
+// ============================================
+
+async function saveRoutine(e) {
+  e.preventDefault();
+
+  const name = document.getElementById("routineName").value.trim();
+
+  if (!name) {
+    showToast("❌ Ingresa un nombre para la rutina");
+    return;
+  }
+
+  if (currentExercises.length === 0) {
+    showToast("❌ Agrega al menos un ejercicio");
+    return;
+  }
+
+  if (!auth.currentUser) {
+    showToast("❌ Debes estar autenticado");
+    return;
+  }
+
+  const routineData = {
+    name: name,
+    exercises: currentExercises,
+    userId: auth.currentUser.uid,
+    createdAt: serverTimestamp(),
+  };
 
   try {
     if (editingRoutineId) {
-      // Actualizar rutina existente
       const routineRef = doc(db, "routines", editingRoutineId);
       await updateDoc(routineRef, {
-        exercise,
-        series,
-        reps,
-        weight,
-        updatedAt: serverTimestamp(),
+        name: routineData.name,
+        exercises: routineData.exercises,
       });
-      showToast("Rutina actualizada correctamente", "success");
+      showToast("✅ Rutina actualizada");
+      console.log("✅ Rutina actualizada:", editingRoutineId);
     } else {
-      // Crear nueva rutina
-      await addDoc(collection(db, "routines"), {
-        userId: currentUser.uid,
-        exercise,
-        series,
-        reps,
-        weight,
-        createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp(),
-      });
-      showToast("Rutina creada correctamente", "success");
+      const routinesCollection = collection(db, "routines");
+      const docRef = await addDoc(routinesCollection, routineData);
+      showToast("✅ Rutina creada");
+      console.log("✅ Rutina creada con ID:", docRef.id);
     }
 
     closeRoutineModal();
-    loadRoutines();
+    await loadRoutines();
   } catch (error) {
-    console.error("❌ Error al guardar rutina:", error);
-    showToast("Error al guardar rutina", "error");
-  } finally {
-    btnSubmit.disabled = false;
-    btnSubmit.textContent = "Guardar";
+    console.error("❌ Error guardando rutina:", error);
+    console.error("Detalles:", error.message);
+    showToast("Error: " + error.message);
   }
 }
 
-/**
- * ========================================
- * ABRIR MODAL DE CONFIRMACIÓN DE ELIMINAR
- * ========================================
- */
-function openDeleteModal(routineId) {
-  deletingRoutineId = routineId;
-  const deleteModal = document.getElementById("deleteModal");
-  deleteModal.classList.remove("hidden");
+// ============================================
+// EDITAR Y ELIMINAR
+// ============================================
+
+function editRoutine(routineId) {
+  const routine = routines.find((r) => r.id === routineId);
+  if (!routine) return;
+
+  editingRoutineId = routineId;
+  currentExercises = [...routine.exercises];
+
+  document.getElementById("modalTitle").textContent = "Editar Rutina";
+  document.getElementById("routineName").value = routine.name;
+
+  renderExercisesInRoutine();
+  document.getElementById("routineModal").classList.add("active");
 }
 
-/**
- * ========================================
- * CERRAR MODAL DE ELIMINAR
- * ========================================
- */
-function closeDeleteModal() {
-  const deleteModal = document.getElementById("deleteModal");
-  deleteModal.classList.add("hidden");
-  deletingRoutineId = null;
-}
+async function deleteRoutine(routineId) {
+  const routine = routines.find((r) => r.id === routineId);
+  if (!routine) return;
 
-/**
- * ========================================
- * ELIMINAR RUTINA
- * ========================================
- */
-async function handleDeleteRoutine() {
-  if (!deletingRoutineId) return;
-
-  const btnConfirm = document.getElementById("btnConfirmDelete");
-  btnConfirm.disabled = true;
-  btnConfirm.textContent = "Eliminando...";
+  const confirmar = confirm(`¿Eliminar la rutina "${routine.name}"?`);
+  if (!confirmar) return;
 
   try {
-    await deleteDoc(doc(db, "routines", deletingRoutineId));
-    showToast("Rutina eliminada correctamente", "success");
-    closeDeleteModal();
+    await deleteDoc(doc(db, "routines", routineId));
+    showToast("✅ Rutina eliminada");
     loadRoutines();
   } catch (error) {
-    console.error("❌ Error al eliminar rutina:", error);
-    showToast("Error al eliminar rutina", "error");
-  } finally {
-    btnConfirm.disabled = false;
-    btnConfirm.textContent = "Eliminar";
+    console.error("❌ Error eliminando rutina:", error);
+    showToast("Error al eliminar la rutina");
   }
 }
 
-/**
- * ========================================
- * MOSTRAR NOTIFICACIÓN TOAST
- * ========================================
- */
-function showToast(message, type = "success") {
-  const toast = document.getElementById("toast");
-  const toastMessage = document.getElementById("toastMessage");
+// ============================================
+// INICIAR ENTRENAMIENTO
+// ============================================
 
-  if (!toast || !toastMessage) return;
-
-  toastMessage.textContent = message;
-  toast.className = `toast ${type}`;
-  toast.classList.remove("hidden");
-
-  setTimeout(() => {
-    toast.classList.add("hidden");
-  }, 3000);
+function startWorkout(routineId) {
+  window.location.href = `workout.html?id=${routineId}`;
 }
 
-/**
- * ========================================
- * EXPORTS
- * ========================================
- */
-export { loadRoutines, handleSubmitRoutine, handleDeleteRoutine, showToast };
+window.startWorkout = startWorkout;
+
+// ============================================
+// CHECK EJERCICIO SELECCIONADO
+// ============================================
+
+function checkForSelectedExercise() {
+  const selectedExercise = localStorage.getItem("selectedExercise");
+  if (selectedExercise) {
+    const exercise = JSON.parse(selectedExercise);
+    showToast(`✅ ${exercise.name} seleccionado`);
+    localStorage.removeItem("selectedExercise");
+  }
+}
+
+// ============================================
+// TOAST
+// ============================================
+
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  if (!toast) return;
+
+  toast.textContent = message;
+  toast.classList.add("show");
+
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 3000);
+}

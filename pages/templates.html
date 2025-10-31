@@ -1,0 +1,123 @@
+<!-- ============================================ -->
+<!-- ARCHIVO: pages/templates.html -->
+<!-- ============================================ -->
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plantillas de Rutinas - ProTrainer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/templates.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="templates-header">
+        <button class="btn-back" id="btnBack">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+        </button>
+        <h1>Plantillas de Rutinas</h1>
+        <div class="header-spacer"></div>
+    </header>
+
+    <!-- Filtros -->
+    <section class="filters-section">
+        <div class="filter-tabs" id="filterTabs">
+            <button class="filter-tab active" data-filter="all">Todas</button>
+            <button class="filter-tab" data-filter="principiante">Principiante</button>
+            <button class="filter-tab" data-filter="intermedio">Intermedio</button>
+            <button class="filter-tab" data-filter="avanzado">Avanzado</button>
+        </div>
+
+        <div class="filter-chips">
+            <button class="filter-chip active" data-category="all">Todos</button>
+            <button class="filter-chip" data-category="fuerza">Fuerza</button>
+            <button class="filter-chip" data-category="hipertrofia">Hipertrofia</button>
+            <button class="filter-chip" data-category="perdida-peso">Pérdida de Peso</button>
+            <button class="filter-chip" data-category="resistencia">Resistencia</button>
+        </div>
+    </section>
+
+    <!-- Info de resultados -->
+    <div class="results-info">
+        <span id="resultsCount">0 plantillas disponibles</span>
+    </div>
+
+    <!-- Grid de Plantillas -->
+    <main class="templates-container" id="templatesContainer">
+        <!-- Se genera dinámicamente -->
+    </main>
+
+    <!-- Modal Detalle de Plantilla -->
+    <div class="modal-overlay" id="templateModal">
+        <div class="modal-template">
+            <button class="btn-close-modal" id="btnCloseModal">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+            </button>
+
+            <div class="modal-content" id="modalContent">
+                <!-- Se genera dinámicamente -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Personalizar Antes de Guardar -->
+    <div class="modal-overlay" id="customizeModal">
+        <div class="modal-customize">
+            <button class="btn-close-modal" id="btnCloseCustomize">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+            </button>
+
+            <div class="modal-content">
+                <h2>Personalizar Rutina</h2>
+                <p style="color: var(--gris-claro); margin-bottom: 2rem;">Ajusta la rutina antes de guardarla</p>
+
+                <form id="customizeForm">
+                    <div class="form-group">
+                        <label for="customRoutineName">Nombre de la Rutina</label>
+                        <input type="text" id="customRoutineName" required>
+                    </div>
+
+                    <div class="exercises-preview" id="exercisesPreview">
+                        <!-- Se genera dinámicamente -->
+                    </div>
+
+                    <div class="modal-actions">
+                        <button type="button" class="btn-action btn-cancel" id="btnCancelCustomize">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="btn-action btn-save">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            Guardar Rutina
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <script type="module" src="../js/templates.js"></script>
+</body>
+
+</html>

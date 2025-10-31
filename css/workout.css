@@ -1,0 +1,685 @@
+/* ============================================ */
+/* ARCHIVO: css/workout.css */
+/* ============================================ */
+
+/* Variables */
+:root {
+  --verde-principal: #00ff88;
+  --verde-oscuro: #00995e;
+  --negro: #000000;
+  --blanco: #ffffff;
+  --gris-oscuro: #1a1a1a;
+  --gris-medio: #2a2a2a;
+  --gris-claro: #3a3a3a;
+}
+
+/* Reset y body */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: var(--negro);
+  color: var(--blanco);
+  min-height: 100vh;
+  padding-bottom: 80px;
+}
+
+/* ============================================ */
+/* HEADER */
+/* ============================================ */
+
+.workout-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: var(--gris-oscuro);
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  z-index: 100;
+  border-bottom: 2px solid var(--verde-principal);
+}
+
+.btn-back {
+  background: transparent;
+  border: none;
+  color: var(--verde-principal);
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+
+.btn-back:hover {
+  transform: translateX(-3px);
+}
+
+.header-info {
+  flex: 1;
+  text-align: center;
+}
+
+.header-info h1 {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.2rem;
+  color: var(--blanco);
+  margin-bottom: 0.25rem;
+}
+
+.session-timer {
+  font-size: 1rem;
+  color: var(--verde-principal);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.btn-finish {
+  background: var(--verde-principal);
+  color: var(--negro);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-finish:hover {
+  background: var(--verde-oscuro);
+  transform: translateY(-2px);
+}
+
+/* ============================================ */
+/* CONTAINER PRINCIPAL */
+/* ============================================ */
+
+.workout-container {
+  margin-top: 80px;
+  padding: 1rem;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.loading-workout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 3rem 1rem;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--gris-claro);
+  border-top: 4px solid var(--verde-principal);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ============================================ */
+/* LISTA DE EJERCICIOS */
+/* ============================================ */
+
+.exercises-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.exercise-card {
+  background: var(--gris-oscuro);
+  border-radius: 12px;
+  padding: 1rem;
+  border: 2px solid var(--gris-claro);
+  transition: border-color 0.3s;
+}
+
+.exercise-card.completed {
+  border-color: var(--verde-principal);
+  opacity: 0.7;
+}
+
+.exercise-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-bottom: 1rem;
+}
+
+.exercise-title {
+  flex: 1;
+}
+
+.exercise-title h3 {
+  font-size: 1.1rem;
+  color: var(--blanco);
+  margin-bottom: 0.25rem;
+}
+
+.exercise-category {
+  font-size: 0.85rem;
+  color: var(--verde-principal);
+}
+
+.btn-timer-exercise {
+  background: var(--gris-medio);
+  border: 1px solid var(--verde-principal);
+  color: var(--verde-principal);
+  padding: 0.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-timer-exercise:hover {
+  background: var(--verde-principal);
+  color: var(--negro);
+}
+
+/* Series */
+.exercise-sets {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.set-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  gap: 0.75rem;
+  align-items: center;
+  background: var(--gris-medio);
+  padding: 0.75rem;
+  border-radius: 8px;
+}
+
+.set-checkbox {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  accent-color: var(--verde-principal);
+}
+
+.set-info {
+  display: flex;
+  gap: 1rem;
+  flex: 1;
+}
+
+.set-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.set-input-group label {
+  font-size: 0.75rem;
+  color: var(--gris-claro);
+  text-transform: uppercase;
+}
+
+.set-input {
+  background: var(--negro);
+  border: 1px solid var(--gris-claro);
+  color: var(--blanco);
+  padding: 0.5rem;
+  border-radius: 6px;
+  width: 70px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.set-input:focus {
+  outline: none;
+  border-color: var(--verde-principal);
+}
+
+.set-status {
+  font-size: 1.5rem;
+}
+
+/* ============================================ */
+/* BOTÓN FLOTANTE TIMER */
+/* ============================================ */
+
+.btn-timer-float {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: var(--verde-principal);
+  color: var(--negro);
+  border: none;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0, 255, 136, 0.4);
+  transition: all 0.3s;
+  z-index: 99;
+}
+
+.btn-timer-float:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 30px rgba(0, 255, 136, 0.6);
+}
+
+.btn-timer-float span {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* ============================================ */
+/* MODAL TIMER */
+/* ============================================ */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal-overlay.active {
+  display: flex;
+}
+
+.modal-timer {
+  background: var(--gris-oscuro);
+  border-radius: 20px;
+  padding: 2rem;
+  max-width: 400px;
+  width: 100%;
+  position: relative;
+  border: 2px solid var(--verde-principal);
+}
+
+.btn-close-modal {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  color: var(--gris-claro);
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: color 0.3s;
+}
+
+.btn-close-modal:hover {
+  color: var(--blanco);
+}
+
+.modal-timer h2 {
+  font-family: "Montserrat", sans-serif;
+  text-align: center;
+  margin-bottom: 2rem;
+  color: var(--verde-principal);
+}
+
+/* Timer Display */
+.timer-display {
+  font-size: 4rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--verde-principal);
+  margin-bottom: 2rem;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+}
+
+/* Presets */
+.timer-presets {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.preset-btn {
+  background: var(--gris-medio);
+  border: 2px solid var(--gris-claro);
+  color: var(--blanco);
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.preset-btn:hover,
+.preset-btn.active {
+  background: var(--verde-principal);
+  color: var(--negro);
+  border-color: var(--verde-principal);
+}
+
+/* Custom Input */
+.timer-custom {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  justify-content: center;
+}
+
+.timer-custom input {
+  background: var(--negro);
+  border: 2px solid var(--gris-claro);
+  color: var(--blanco);
+  padding: 0.75rem;
+  border-radius: 8px;
+  width: 70px;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.timer-custom input:focus {
+  outline: none;
+  border-color: var(--verde-principal);
+}
+
+.timer-custom span {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.btn-set-custom {
+  background: var(--verde-principal);
+  color: var(--negro);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-set-custom:hover {
+  background: var(--verde-oscuro);
+}
+
+/* Controles */
+.timer-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.btn-control {
+  background: var(--gris-medio);
+  border: 2px solid var(--gris-claro);
+  color: var(--verde-principal);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+}
+
+.btn-control span {
+  position: absolute;
+  bottom: -20px;
+  font-size: 0.7rem;
+  white-space: nowrap;
+}
+
+.btn-control:hover {
+  background: var(--gris-claro);
+  transform: scale(1.05);
+}
+
+.btn-control-main {
+  background: var(--verde-principal);
+  color: var(--negro);
+  border: none;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 20px rgba(0, 255, 136, 0.4);
+}
+
+.btn-control-main:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 30px rgba(0, 255, 136, 0.6);
+}
+
+.btn-control-main.paused svg {
+  display: none;
+}
+
+.btn-control-main.paused::after {
+  content: "";
+  width: 8px;
+  height: 24px;
+  background: var(--negro);
+  position: absolute;
+  left: 28px;
+}
+
+.btn-control-main.paused::before {
+  content: "";
+  width: 8px;
+  height: 24px;
+  background: var(--negro);
+  position: absolute;
+  right: 28px;
+}
+
+/* ============================================ */
+/* MODAL FINALIZAR */
+/* ============================================ */
+
+.modal-finish {
+  background: var(--gris-oscuro);
+  border-radius: 20px;
+  padding: 2rem;
+  max-width: 500px;
+  width: 100%;
+  border: 2px solid var(--verde-principal);
+}
+
+.modal-finish h2 {
+  font-family: "Montserrat", sans-serif;
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 1.5rem;
+}
+
+.finish-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.stat-item {
+  background: var(--gris-medio);
+  padding: 1.5rem 1rem;
+  border-radius: 12px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: var(--gris-claro);
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--verde-principal);
+}
+
+.finish-notes {
+  margin-bottom: 2rem;
+}
+
+.finish-notes label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--gris-claro);
+  font-size: 0.9rem;
+}
+
+.finish-notes textarea {
+  width: 100%;
+  background: var(--negro);
+  border: 2px solid var(--gris-claro);
+  color: var(--blanco);
+  padding: 1rem;
+  border-radius: 8px;
+  resize: vertical;
+  min-height: 100px;
+  font-family: "Poppins", sans-serif;
+}
+
+.finish-notes textarea:focus {
+  outline: none;
+  border-color: var(--verde-principal);
+}
+
+.finish-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.btn-secondary,
+.btn-primary {
+  flex: 1;
+  padding: 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s;
+}
+
+.btn-secondary {
+  background: var(--gris-medio);
+  color: var(--blanco);
+}
+
+.btn-secondary:hover {
+  background: var(--gris-claro);
+}
+
+.btn-primary {
+  background: var(--verde-principal);
+  color: var(--negro);
+}
+
+.btn-primary:hover {
+  background: var(--verde-oscuro);
+  transform: translateY(-2px);
+}
+
+/* ============================================ */
+/* TOAST */
+/* ============================================ */
+
+.toast {
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: var(--verde-principal);
+  color: var(--negro);
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  font-weight: 600;
+  opacity: 0;
+  transition: all 0.3s;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ============================================ */
+/* RESPONSIVE */
+/* ============================================ */
+
+@media (max-width: 480px) {
+  .workout-header {
+    padding: 0.75rem;
+  }
+
+  .header-info h1 {
+    font-size: 1rem;
+  }
+
+  .session-timer {
+    font-size: 0.85rem;
+  }
+
+  .btn-finish {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  .timer-display {
+    font-size: 3rem;
+  }
+
+  .finish-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .set-item {
+    grid-template-columns: auto 1fr;
+    gap: 0.5rem;
+  }
+
+  .set-info {
+    grid-column: 1 / -1;
+    justify-content: space-around;
+  }
+}

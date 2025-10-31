@@ -1,0 +1,156 @@
+<!-- ============================================ -->
+<!-- ARCHIVO: pages/workout.html -->
+<!-- ============================================ -->
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrenamiento - ProTrainer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/workout.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="workout-header">
+        <button class="btn-back" id="btnBack">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+        </button>
+        <div class="header-info">
+            <h1 id="routineName">Mi Rutina</h1>
+            <div class="session-timer" id="sessionTimer">00:00:00</div>
+        </div>
+        <button class="btn-finish" id="btnFinish">Finalizar</button>
+    </header>
+
+    <!-- Contenedor principal -->
+    <main class="workout-container">
+        <!-- Loading -->
+        <div class="loading-workout" id="loadingWorkout">
+            <div class="spinner"></div>
+            <p>Cargando rutina...</p>
+        </div>
+
+        <!-- Lista de ejercicios -->
+        <div class="exercises-list" id="exercisesList">
+            <!-- Se genera dinámicamente -->
+        </div>
+
+        <!-- Botón flotante del timer -->
+        <button class="btn-timer-float" id="btnTimerFloat">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+            </svg>
+            <span>Timer</span>
+        </button>
+    </main>
+
+    <!-- Modal Timer -->
+    <div class="modal-overlay" id="timerModal">
+        <div class="modal-timer">
+            <button class="btn-close-modal" id="btnCloseTimer">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+            </button>
+
+            <h2>Temporizador de Descanso</h2>
+
+            <!-- Display del timer -->
+            <div class="timer-display" id="timerDisplay">01:00</div>
+
+            <!-- Presets -->
+            <div class="timer-presets">
+                <button class="preset-btn" data-seconds="30">30s</button>
+                <button class="preset-btn active" data-seconds="60">60s</button>
+                <button class="preset-btn" data-seconds="90">90s</button>
+                <button class="preset-btn" data-seconds="120">2min</button>
+            </div>
+
+            <!-- Custom input -->
+            <div class="timer-custom">
+                <input type="number" id="customMinutes" placeholder="Min" min="0" max="59">
+                <span>:</span>
+                <input type="number" id="customSeconds" placeholder="Seg" min="0" max="59">
+                <button class="btn-set-custom" id="btnSetCustom">Set</button>
+            </div>
+
+            <!-- Controles -->
+            <div class="timer-controls">
+                <button class="btn-control" id="btnTimerReset">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="1 4 1 10 7 10" />
+                        <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+                    </svg>
+                </button>
+                <button class="btn-control-main" id="btnTimerPlay">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                        <polygon points="5 3 19 12 5 21 5 3" />
+                    </svg>
+                </button>
+                <button class="btn-control" id="btnTimerAdd">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="5" x2="12" y2="19" />
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                    </svg>
+                    <span>+30s</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Finalizar Entrenamiento -->
+    <div class="modal-overlay" id="finishModal">
+        <div class="modal-finish">
+            <h2>🎉 ¡Entrenamiento Completado!</h2>
+            <div class="finish-stats">
+                <div class="stat-item">
+                    <span class="stat-label">Duración</span>
+                    <span class="stat-value" id="totalDuration">45:30</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Ejercicios</span>
+                    <span class="stat-value" id="totalExercises">8</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Volumen Total</span>
+                    <span class="stat-value" id="totalVolume">5,420 kg</span>
+                </div>
+            </div>
+
+            <div class="finish-notes">
+                <label for="workoutNotes">Notas del entrenamiento (opcional)</label>
+                <textarea id="workoutNotes" placeholder="¿Cómo te sentiste? ¿Algo que destacar?"></textarea>
+            </div>
+
+            <div class="finish-actions">
+                <button class="btn-secondary" id="btnCancelFinish">Cancelar</button>
+                <button class="btn-primary" id="btnConfirmFinish">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast de notificaciones -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Audio para alarma -->
+    <audio id="timerSound" preload="auto">
+        <source
+            src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZjTkIF2i68OScTgwOUKfj8LJnHwU2jdXwyXcsBS15yO/flUELElyx6emu"
+            type="audio/wav">
+    </audio>
+    <script type="module" src="../js/workout.js"></script>
+</body>
+
+</html>
