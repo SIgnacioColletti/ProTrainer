@@ -2,10 +2,19 @@
 // ARCHIVO: js/firebaseConfig.js
 // ============================================
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+/**
+ * ========================================
+ * CONFIGURACIÓN DE FIREBASE
+ * ========================================
+ */
 
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+// ========================================
+// CONFIGURACIÓN (reemplazar con tus datos)
+// ========================================
 const firebaseConfig = {
   apiKey: "AIzaSyDmrq9We97CPsOIZwviSMV5-K1R2lcdW9M",
   authDomain: "protrainer-27b8c.firebaseapp.com",
@@ -16,17 +25,26 @@ const firebaseConfig = {
   measurementId: "G-0JFGYTG2X6",
 };
 
-// Inicializar Firebase
-const app = initializeApp(firebaseConfig);
+// ========================================
+// INICIALIZACIÓN
+// ========================================
+let app;
+let auth;
+let db;
 
-// Obtener servicios
-const auth = getAuth(app);
-const db = getFirestore(app);
+try {
+  app = initializeApp(firebaseConfig);
+  auth = getAuth(app);
+  db = getFirestore(app);
 
-// Verificación
-console.log("🔥 Firebase App inicializada:", app);
-console.log("🔐 Auth inicializado:", auth);
-console.log("📊 Firestore inicializado:", db);
+  console.log("🔥 Firebase inicializado correctamente");
+  console.log("✅ Auth:", auth ? "OK" : "ERROR");
+  console.log("✅ Firestore:", db ? "OK" : "ERROR");
+} catch (error) {
+  console.error("❌ Error al inicializar Firebase:", error);
+}
 
-// Exportar
+// ========================================
+// EXPORTS
+// ========================================
 export { auth, db };

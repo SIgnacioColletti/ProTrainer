@@ -1,0 +1,393 @@
+<!-- ============================================ -->
+<!-- ARCHIVO: pages/calculators.html -->
+<!-- ============================================ -->
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadoras - ProTrainer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/calculators.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <button class="back-btn" onclick="window.location.href='dashboard.html'">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+        </button>
+        <h1>Calculadoras</h1>
+        <div class="header-spacer"></div>
+    </header>
+
+    <!-- Tabs Navigation -->
+    <div class="tabs-container">
+        <div class="tabs">
+            <button class="tab active" data-tab="oneRM">1RM</button>
+            <button class="tab" data-tab="tdee">TDEE</button>
+            <button class="tab" data-tab="bodyfat">Grasa</button>
+            <button class="tab" data-tab="progression">Progresión</button>
+            <button class="tab" data-tab="plates">Discos</button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- CALCULADORA 1RM -->
+        <div class="calculator-section active" id="oneRM-section">
+            <div class="calculator-card">
+                <div class="calc-header">
+                    <h2>Calculadora de 1RM</h2>
+                    <p class="calc-description">Calcula tu repetición máxima estimada</p>
+                </div>
+
+                <div class="calc-body">
+                    <div class="input-group">
+                        <label for="weight">Peso levantado (kg)</label>
+                        <input type="number" id="weight" placeholder="100" step="0.5" min="1">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="reps">Repeticiones realizadas</label>
+                        <input type="number" id="reps" placeholder="5" min="1" max="20">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="formula">Fórmula</label>
+                        <select id="formula">
+                            <option value="epley">Epley (más popular)</option>
+                            <option value="brzycki">Brzycki</option>
+                            <option value="lander">Lander</option>
+                            <option value="lombardi">Lombardi</option>
+                        </select>
+                    </div>
+
+                    <button class="calc-btn" onclick="calculateOneRM()">
+                        Calcular 1RM
+                    </button>
+                </div>
+
+                <div class="calc-results" id="oneRM-results" style="display: none;">
+                    <div class="result-highlight">
+                        <span class="result-label">Tu 1RM estimado es:</span>
+                        <span class="result-value" id="oneRM-value">0 kg</span>
+                    </div>
+
+                    <div class="percentage-table">
+                        <h3>Tabla de Porcentajes</h3>
+                        <div class="table-container" id="percentage-table"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CALCULADORA TDEE -->
+        <div class="calculator-section" id="tdee-section">
+            <div class="calculator-card">
+                <div class="calc-header">
+                    <h2>Calculadora TDEE y Macros</h2>
+                    <p class="calc-description">Calcula tus calorías y macronutrientes</p>
+                </div>
+
+                <div class="calc-body">
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label for="age">Edad</label>
+                            <input type="number" id="age" placeholder="25" min="15" max="100">
+                        </div>
+
+                        <div class="input-group">
+                            <label for="gender">Sexo</label>
+                            <select id="gender">
+                                <option value="male">Masculino</option>
+                                <option value="female">Femenino</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label for="weight-tdee">Peso (kg)</label>
+                            <input type="number" id="weight-tdee" placeholder="75" step="0.1" min="30">
+                        </div>
+
+                        <div class="input-group">
+                            <label for="height">Altura (cm)</label>
+                            <input type="number" id="height" placeholder="175" min="130">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="activity">Nivel de Actividad</label>
+                        <select id="activity">
+                            <option value="1.2">Sedentario (poco o ningún ejercicio)</option>
+                            <option value="1.375">Ligero (1-3 días/semana)</option>
+                            <option value="1.55" selected>Moderado (3-5 días/semana)</option>
+                            <option value="1.725">Alto (6-7 días/semana)</option>
+                            <option value="1.9">Muy Alto (2 veces/día)</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="goal">Objetivo</label>
+                        <select id="goal">
+                            <option value="loss">Pérdida de peso (-20%)</option>
+                            <option value="maintain" selected>Mantener peso</option>
+                            <option value="gain">Ganancia muscular (+10%)</option>
+                        </select>
+                    </div>
+
+                    <button class="calc-btn" onclick="calculateTDEE()">
+                        Calcular TDEE y Macros
+                    </button>
+                </div>
+
+                <div class="calc-results" id="tdee-results" style="display: none;">
+                    <div class="result-grid">
+                        <div class="result-card">
+                            <span class="result-label">TMB</span>
+                            <span class="result-value" id="bmr-value">0</span>
+                            <span class="result-unit">kcal/día</span>
+                        </div>
+                        <div class="result-card highlight">
+                            <span class="result-label">TDEE</span>
+                            <span class="result-value" id="tdee-value">0</span>
+                            <span class="result-unit">kcal/día</span>
+                        </div>
+                        <div class="result-card">
+                            <span class="result-label">Objetivo</span>
+                            <span class="result-value" id="goal-value">0</span>
+                            <span class="result-unit">kcal/día</span>
+                        </div>
+                    </div>
+
+                    <div class="macros-section">
+                        <h3>Distribución de Macros</h3>
+                        <div class="macros-grid">
+                            <div class="macro-card protein">
+                                <div class="macro-icon">🥩</div>
+                                <div class="macro-name">Proteínas</div>
+                                <div class="macro-value" id="protein-g">0g</div>
+                                <div class="macro-cal" id="protein-cal">0 kcal</div>
+                            </div>
+                            <div class="macro-card carbs">
+                                <div class="macro-icon">🍚</div>
+                                <div class="macro-name">Carbohidratos</div>
+                                <div class="macro-value" id="carbs-g">0g</div>
+                                <div class="macro-cal" id="carbs-cal">0 kcal</div>
+                            </div>
+                            <div class="macro-card fats">
+                                <div class="macro-icon">🥑</div>
+                                <div class="macro-name">Grasas</div>
+                                <div class="macro-value" id="fats-g">0g</div>
+                                <div class="macro-cal" id="fats-cal">0 kcal</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CALCULADORA GRASA CORPORAL -->
+        <div class="calculator-section" id="bodyfat-section">
+            <div class="calculator-card">
+                <div class="calc-header">
+                    <h2>Calculadora de Grasa Corporal</h2>
+                    <p class="calc-description">Método US Navy (circunferencias)</p>
+                </div>
+
+                <div class="calc-body">
+                    <div class="input-group">
+                        <label for="gender-bf">Sexo</label>
+                        <select id="gender-bf" onchange="toggleBodyfatInputs()">
+                            <option value="male">Masculino</option>
+                            <option value="female">Femenino</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="height-bf">Altura (cm)</label>
+                        <input type="number" id="height-bf" placeholder="175" min="130">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="neck">Circunferencia del cuello (cm)</label>
+                        <input type="number" id="neck" placeholder="38" step="0.5" min="20">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="waist">Circunferencia de la cintura (cm)</label>
+                        <input type="number" id="waist" placeholder="85" step="0.5" min="40">
+                    </div>
+
+                    <div class="input-group" id="hip-group" style="display: none;">
+                        <label for="hip">Circunferencia de la cadera (cm)</label>
+                        <input type="number" id="hip" placeholder="95" step="0.5" min="50">
+                    </div>
+
+                    <button class="calc-btn" onclick="calculateBodyfat()">
+                        Calcular Grasa Corporal
+                    </button>
+                </div>
+
+                <div class="calc-results" id="bodyfat-results" style="display: none;">
+                    <div class="result-highlight">
+                        <span class="result-label">Tu grasa corporal estimada es:</span>
+                        <span class="result-value" id="bodyfat-value">0%</span>
+                    </div>
+
+                    <div class="bodyfat-chart">
+                        <h3>Clasificación</h3>
+                        <div class="bf-bar-container">
+                            <div class="bf-bar">
+                                <div class="bf-indicator" id="bf-indicator"></div>
+                            </div>
+                            <div class="bf-labels">
+                                <span>Esencial</span>
+                                <span>Atlético</span>
+                                <span>Fitness</span>
+                                <span>Promedio</span>
+                                <span>Alto</span>
+                            </div>
+                        </div>
+                        <p class="bf-category" id="bf-category"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CALCULADORA PROGRESIÓN -->
+        <div class="calculator-section" id="progression-section">
+            <div class="calculator-card">
+                <div class="calc-header">
+                    <h2>Calculadora de Progresión</h2>
+                    <p class="calc-description">Planifica tu aumento de carga</p>
+                </div>
+
+                <div class="calc-body">
+                    <div class="input-group">
+                        <label for="current-weight">Peso actual (kg)</label>
+                        <input type="number" id="current-weight" placeholder="80" step="0.5" min="1">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="target-weight">Peso objetivo (kg)</label>
+                        <input type="number" id="target-weight" placeholder="100" step="0.5" min="1">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="weeks">Plazo (semanas)</label>
+                        <input type="number" id="weeks" placeholder="12" min="1" max="52">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="increment">Incremento semanal (%)</label>
+                        <select id="increment">
+                            <option value="1">Conservador (1%)</option>
+                            <option value="2" selected>Moderado (2%)</option>
+                            <option value="2.5">Agresivo (2.5%)</option>
+                        </select>
+                    </div>
+
+                    <button class="calc-btn" onclick="calculateProgression()">
+                        Calcular Progresión
+                    </button>
+                </div>
+
+                <div class="calc-results" id="progression-results" style="display: none;">
+                    <div class="result-summary">
+                        <div class="summary-item">
+                            <span>Incremento semanal:</span>
+                            <strong id="weekly-increase">0 kg</strong>
+                        </div>
+                        <div class="summary-item">
+                            <span>Peso final estimado:</span>
+                            <strong id="final-weight">0 kg</strong>
+                        </div>
+                    </div>
+
+                    <div class="progression-timeline" id="progression-timeline"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CALCULADORA DISCOS -->
+        <div class="calculator-section" id="plates-section">
+            <div class="calculator-card">
+                <div class="calc-header">
+                    <h2>Calculadora de Discos</h2>
+                    <p class="calc-description">Calcula los discos necesarios</p>
+                </div>
+
+                <div class="calc-body">
+                    <div class="input-group">
+                        <label for="target-load">Peso objetivo (kg)</label>
+                        <input type="number" id="target-load" placeholder="100" step="2.5" min="20">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="bar-weight">Peso de la barra (kg)</label>
+                        <select id="bar-weight">
+                            <option value="20" selected>Olímpica (20 kg)</option>
+                            <option value="15">Estándar (15 kg)</option>
+                            <option value="10">EZ (10 kg)</option>
+                        </select>
+                    </div>
+
+                    <button class="calc-btn" onclick="calculatePlates()">
+                        Calcular Discos
+                    </button>
+                </div>
+
+                <div class="calc-results" id="plates-results" style="display: none;">
+                    <div class="plates-summary">
+                        <h3>Por lado necesitas:</h3>
+                        <div class="plates-list" id="plates-list"></div>
+                    </div>
+
+                    <div class="plates-visual">
+                        <h3>Vista de la barra</h3>
+                        <div class="bar-visualization" id="bar-visual"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- History Button -->
+    <button class="history-btn" onclick="showHistory()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10" />
+            <polyline points="12 6 12 12 16 14" />
+        </svg>
+        <span>Historial</span>
+    </button>
+
+    <!-- History Modal -->
+    <div class="modal" id="history-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Historial de Cálculos</h2>
+                <button class="close-btn" onclick="closeHistory()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="history-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="../js/calculators.js"></script>
+</body>
+
+</html>

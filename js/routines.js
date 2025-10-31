@@ -1,20 +1,20 @@
 // ============================================
 // ARCHIVO: js/routines.js
 // ============================================
-
 import { auth, db } from "./firebaseConfig.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import {
   collection,
+  doc,
   addDoc,
   getDocs,
-  deleteDoc,
   updateDoc,
-  doc,
+  deleteDoc,
   query,
   where,
+  orderBy,
   serverTimestamp,
-} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"; // ✅ CAMBIAR DE 10.8.0 A 10.7.1
 // ============================================
 // VARIABLES GLOBALES
 // ============================================

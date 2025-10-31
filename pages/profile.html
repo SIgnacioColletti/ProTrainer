@@ -16,6 +16,8 @@
     <!-- Estilos -->
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="../css/profile.css">
+    <link rel="stylesheet" href="../css/achievements.css">
+
 </head>
 
 <body>
@@ -168,7 +170,33 @@
 
             </div>
         </section>
+        <!-- AGREGAR ESTA SECCIÓN ANTES DEL CIERRE DEL CONTAINER -->
 
+        <!-- Sección de Logros -->
+        <section class="achievements-section">
+            <div class="achievements-header">
+                <h2>🏆 Mis Logros</h2>
+            </div>
+
+            <!-- Filtros -->
+            <div class="achievements-filters">
+                <button class="filter-btn active" data-filter="all">Todos</button>
+                <button class="filter-btn" data-filter="unlocked">Desbloqueados</button>
+                <button class="filter-btn" data-filter="locked">Bloqueados</button>
+                <button class="filter-btn" data-filter="common">Comunes</button>
+                <button class="filter-btn" data-filter="rare">Raros</button>
+                <button class="filter-btn" data-filter="epic">Épicos</button>
+                <button class="filter-btn" data-filter="legendary">Legendarios</button>
+            </div>
+
+            <!-- Grid de Logros -->
+            <div class="achievements-grid" id="achievements-grid">
+                <!-- Los logros se cargarán aquí dinámicamente -->
+                <div style="grid-column: 1/-1; text-align: center; padding: 2rem; color: #999;">
+                    Cargando logros...
+                </div>
+            </div>
+        </section>
     </div>
 
     <!-- Toast de notificaciones -->
@@ -179,6 +207,10 @@
     <!-- Firebase SDK -->
     <script type="module" src="../js/firebaseConfig.js"></script>
     <script type="module" src="../js/profile.js"></script>
+    <script type="module" src="../js/achievementsData.js"></script>
+    <script type="module" src="../js/achievements.js"></script>
+    <script type="module" src="../js/profileAchievements.js"></script>
+
 
 </body>
 

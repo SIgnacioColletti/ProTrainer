@@ -231,10 +231,12 @@
 
   .action-buttons {
     flex-direction: row;
+    flex-wrap: wrap;
   }
 
   .action-btn {
     flex: 1;
+    min-width: 150px;
     flex-direction: column;
     text-align: center;
   }

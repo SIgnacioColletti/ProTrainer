@@ -1,0 +1,144 @@
+/* ============================================ */
+/* ARCHIVO: css/pwa-styles.css */
+/* ============================================ */
+
+/* Botón de Instalación PWA */
+.pwa-install-button {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: linear-gradient(135deg, #00ff88, #00995e);
+  color: #000000;
+  border: none;
+  padding: 1rem 1.5rem;
+  border-radius: 50px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 10px 30px rgba(0, 255, 136, 0.4);
+  z-index: 9999;
+  transform: translateY(150px);
+  opacity: 0;
+  transition: all 0.4s ease;
+}
+
+.pwa-install-button.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.pwa-install-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 40px rgba(0, 255, 136, 0.6);
+}
+
+.pwa-install-button:active {
+  transform: translateY(-1px);
+}
+
+.pwa-install-button svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Notificación de Actualización */
+.update-notification {
+  position: fixed;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+  border: 2px solid #00ff88;
+  border-radius: 15px;
+  padding: 1.5rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+  z-index: 10000;
+  transition: top 0.5s ease;
+  max-width: 400px;
+  width: 90%;
+}
+
+.update-notification.show {
+  top: 2rem;
+}
+
+.update-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  text-align: center;
+}
+
+.update-content p {
+  margin: 0;
+  color: #ffffff;
+  font-family: "Poppins", sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.update-content button {
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: none;
+}
+
+#btn-update-app {
+  background: linear-gradient(135deg, #00ff88, #00995e);
+  color: #000000;
+  width: 100%;
+}
+
+#btn-update-app:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(0, 255, 136, 0.4);
+}
+
+#btn-dismiss-update {
+  background: transparent;
+  color: #999;
+  border: 2px solid #3a3a3a;
+  width: 100%;
+}
+
+#btn-dismiss-update:hover {
+  border-color: #00ff88;
+  color: #00ff88;
+}
+
+/* Estilos para modo PWA instalado */
+.pwa-mode {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Splash Screen (iOS) */
+@media (display-mode: standalone) {
+  body {
+    background-color: #000000;
+  }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .pwa-install-button {
+    bottom: 1rem;
+    right: 1rem;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.85rem;
+  }
+
+  .update-notification {
+    width: 95%;
+  }
+}

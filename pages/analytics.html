@@ -1,0 +1,164 @@
+<!-- ============================================ -->
+<!-- ARCHIVO: pages/analytics.html -->
+<!-- ============================================ -->
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics - ProTrainer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/analytics.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <button class="back-btn" onclick="window.location.href='dashboard.html'">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+        </button>
+        <h1>Analytics</h1>
+        <div class="header-spacer"></div>
+    </header>
+
+    <!-- Period Selector -->
+    <div class="period-selector">
+        <button class="period-btn" data-period="7">7 días</button>
+        <button class="period-btn active" data-period="30">30 días</button>
+        <button class="period-btn" data-period="90">90 días</button>
+        <button class="period-btn" data-period="365">1 año</button>
+        <button class="period-btn" data-period="all">Todo</button>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- Insights Automáticos -->
+        <section class="insights-section">
+            <h2 class="section-title">📊 Insights</h2>
+            <div class="insights-grid" id="insights-grid">
+                <div class="insight-card">
+                    <div class="insight-icon">💡</div>
+                    <p>Cargando insights...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Estadísticas Generales -->
+        <section class="stats-overview">
+            <h2 class="section-title">📈 Resumen General</h2>
+            <div class="stats-cards">
+                <div class="stat-card">
+                    <div class="stat-icon">💪</div>
+                    <div class="stat-info">
+                        <span class="stat-label">Entrenamientos</span>
+                        <span class="stat-value" id="total-workouts">0</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⚡</div>
+                    <div class="stat-info">
+                        <span class="stat-label">Volumen Total</span>
+                        <span class="stat-value" id="total-volume">0 kg</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🔥</div>
+                    <div class="stat-info">
+                        <span class="stat-label">Mejor Racha</span>
+                        <span class="stat-value" id="best-streak">0 días</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⏱️</div>
+                    <div class="stat-info">
+                        <span class="stat-label">Tiempo Total</span>
+                        <span class="stat-value" id="total-time">0h</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gráfico: Frecuencia de Entrenamiento -->
+        <section class="chart-section">
+            <h2 class="section-title">📅 Frecuencia de Entrenamiento</h2>
+            <div class="chart-container">
+                <canvas id="frequency-chart"></canvas>
+            </div>
+        </section>
+
+        <!-- Gráfico: Volumen por Grupo Muscular -->
+        <section class="chart-section">
+            <h2 class="section-title">💪 Volumen por Grupo Muscular</h2>
+            <div class="chart-container">
+                <canvas id="muscle-chart"></canvas>
+            </div>
+        </section>
+
+        <!-- Gráfico: Progresión de Fuerza -->
+        <section class="chart-section">
+            <h2 class="section-title">📈 Progresión de Fuerza</h2>
+            <div class="exercise-selector">
+                <label for="exercise-select">Ejercicio:</label>
+                <select id="exercise-select">
+                    <option value="">Cargando ejercicios...</option>
+                </select>
+            </div>
+            <div class="chart-container">
+                <canvas id="strength-chart"></canvas>
+            </div>
+        </section>
+
+        <!-- Heatmap de Entrenamientos -->
+        <section class="heatmap-section">
+            <h2 class="section-title">🔥 Heatmap de Entrenamientos</h2>
+            <div class="heatmap-container" id="heatmap-container">
+                <!-- Se generará dinámicamente -->
+            </div>
+        </section>
+
+        <!-- Mejores PRs -->
+        <section class="prs-section">
+            <h2 class="section-title">🏆 Mejores PRs</h2>
+            <div class="prs-list" id="prs-list">
+                <p style="text-align: center; color: #999;">No hay PRs registrados aún</p>
+            </div>
+        </section>
+
+        <!-- Día Favorito -->
+        <section class="favorite-day-section">
+            <h2 class="section-title">📆 Análisis de Días</h2>
+            <div class="days-chart-container">
+                <canvas id="days-chart"></canvas>
+            </div>
+            <div class="favorite-day-info" id="favorite-day-info">
+                <!-- Se llenará dinámicamente -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="spinner"></div>
+        <p>Analizando datos...</p>
+    </div>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+    <!-- Scripts -->
+    <script type="module" src="../js/firebaseConfig.js"></script>
+    <script type="module" src="../js/analytics.js"></script>
+    <script type="module" src="../js/script.js"></script>
+</body>
+
+</html>

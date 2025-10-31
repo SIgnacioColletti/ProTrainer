@@ -133,12 +133,26 @@ function initDashboardListeners() {
 
   // Botones de acciones rápidas
   const btnRoutines = document.getElementById("btnRoutines");
+  const btnExercises = document.getElementById("btnExercises");
+  const btnCalculators = document.getElementById("btnCalculators");
   const btnProgress = document.getElementById("btnProgress");
   const btnProfile = document.getElementById("btnProfile");
 
   if (btnRoutines) {
     btnRoutines.addEventListener("click", () => {
       window.location.href = "routines.html";
+    });
+  }
+
+  if (btnExercises) {
+    btnExercises.addEventListener("click", () => {
+      window.location.href = "exercises.html";
+    });
+  }
+
+  if (btnCalculators) {
+    btnCalculators.addEventListener("click", () => {
+      window.location.href = "calculators.html";
     });
   }
 
@@ -195,22 +209,11 @@ function showToast(message, type = "success") {
     toast.classList.add("hidden");
   }, 3000);
 }
-document.getElementById("btnRoutines").addEventListener("click", () => {
-  window.location.href = "routines.html";
-});
-
-// AGREGAR ESTE:
-document.getElementById("btnExercises").addEventListener("click", () => {
-  window.location.href = "exercises.html";
-});
-
-document.getElementById("btnProgress").addEventListener("click", () => {
-  window.location.href = "progress.html";
-});
-
-document.getElementById("btnProfile").addEventListener("click", () => {
-  window.location.href = "profile.html";
-});
+if (btnAnalytics) {
+  btnAnalytics.addEventListener("click", () => {
+    window.location.href = "analytics.html";
+  });
+}
 /**
  * ========================================
  * EXPORTS
